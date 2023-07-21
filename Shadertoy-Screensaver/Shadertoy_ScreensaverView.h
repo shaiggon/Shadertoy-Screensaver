@@ -9,4 +9,10 @@
 
 @interface Shadertoy_ScreensaverView : ScreenSaverView
 
+@property (strong) NSColor *myColor;
+@property (strong) NSBezierPath *myPath;
+@property BOOL shouldFill;
+@property (strong) NSImage *previousFrame;
+@property NSOpenGLContext *openGLContext;
+
 @end
