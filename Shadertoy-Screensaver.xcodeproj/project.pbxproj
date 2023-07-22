@@ -9,12 +9,16 @@
 /* Begin PBXBuildFile section */
 		9812FC632A619A860041D5DF /* Shadertoy_ScreensaverView.h in Headers */ = {isa = PBXBuildFile; fileRef = 9812FC622A619A860041D5DF /* Shadertoy_ScreensaverView.h */; };
 		9812FC652A619A860041D5DF /* Shadertoy_ScreensaverView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9812FC642A619A860041D5DF /* Shadertoy_ScreensaverView.m */; };
+		9812FC6D2A6AF1980041D5DF /* fragmentshader.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 9812FC6B2A6AF1980041D5DF /* fragmentshader.glsl */; };
+		9812FC6E2A6AF1980041D5DF /* vertexshader.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 9812FC6C2A6AF1980041D5DF /* vertexshader.glsl */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		9812FC5F2A619A860041D5DF /* Shadertoy-Screensaver.saver */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Shadertoy-Screensaver.saver"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9812FC622A619A860041D5DF /* Shadertoy_ScreensaverView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Shadertoy_ScreensaverView.h; sourceTree = "<group>"; };
 		9812FC642A619A860041D5DF /* Shadertoy_ScreensaverView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Shadertoy_ScreensaverView.m; sourceTree = "<group>"; };
+		9812FC6B2A6AF1980041D5DF /* fragmentshader.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = fragmentshader.glsl; path = "Shadertoy-Screensaver/fragmentshader.glsl"; sourceTree = "<group>"; };
+		9812FC6C2A6AF1980041D5DF /* vertexshader.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = vertexshader.glsl; path = "Shadertoy-Screensaver/vertexshader.glsl"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,6 +35,8 @@
 		9812FC552A619A860041D5DF = {
 			isa = PBXGroup;
 			children = (
+				9812FC6B2A6AF1980041D5DF /* fragmentshader.glsl */,
+				9812FC6C2A6AF1980041D5DF /* vertexshader.glsl */,
 				9812FC612A619A860041D5DF /* Shadertoy-Screensaver */,
 				9812FC602A619A860041D5DF /* Products */,
 			);
@@ -122,6 +128,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9812FC6E2A6AF1980041D5DF /* vertexshader.glsl in Resources */,
+				9812FC6D2A6AF1980041D5DF /* fragmentshader.glsl in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

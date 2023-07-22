@@ -21,6 +21,7 @@
     self = [super initWithFrame:frame isPreview:isPreview];
     NSLog( @"Shadertoy: Hello from initWithFrame" );
     if (self) {
+        self.time = 0.0;
         //[self setAnimationTimeInterval:1/30.0];
         NSOpenGLPixelFormatAttribute attrs[] =
         {
@@ -48,6 +49,19 @@
         [self addSubview:glView]; 
         [self setUpOpenGL];
 
+        self.program = glCreateProgram();
+
+        /*GLuint vertexShader = compileShader(GL_VERTEX_SHADER, [self loadShaderAbsolutePath:@"/Users/laurisaikkonen/code/random/Shadertoy-Screensaver/Shadertoy-Screensaver/vertexshader.glsl"]);
+        GLuint fragmentShader = compileShader(GL_FRAGMENT_SHADER, [self loadShaderAbsolutePath:@"/Users/laurisaikkonen/code/random/Shadertoy-Screensaver/Shadertoy-Screensaver/fragmentshader.glsl"]);*/
+
+        GLuint vertexShader = compileShader(GL_VERTEX_SHADER, [self loadShader:@"vertexshader.glsl"]);
+        GLuint fragmentShader = compileShader(GL_FRAGMENT_SHADER, [self loadShader:@"fragmentshader.glsl"]);
+
+        glAttachShader(self.program, vertexShader);
+        glAttachShader(self.program, fragmentShader);
+        glLinkProgram(self.program);
+        glUseProgram(self.program);
+
         [self setAnimationTimeInterval:1/30.0];
         NSLog(@"Shadertoy: Setup successful");
     }
@@ -71,6 +85,57 @@
     return self;
 }
 
+- (NSString *)loadShaderAbsolutePath:(NSString *)path
+{
+    NSError *error;
+    NSString *shaderString = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:&error];
+    NSBundle* bundle = [NSBundle bundleForClass:[self class]];
+    NSArray *resourceFiles = [bundle pathsForResourcesOfType:@"glsl" inDirectory:nil];
+    NSLog(@"Resource files: %@", resourceFiles);
+    NSLog(@"path: %@", [[NSBundle mainBundle] resourcePath]);
+    if (!shaderString) {
+        NSLog(@"Error loading shader: %@", error.localizedDescription);
+        NSLog(@"shader path: %@", path);
+        return nil;
+    }
+    return shaderString;
+}
+
+- (NSString *)loadShader:(NSString *)name
+{
+    NSString *path = [[NSBundle bundleForClass:[self class]] pathForResource:name ofType:nil];
+    NSLog(@"path: %@", path);
+    NSError *error;
+    NSString *shaderString = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:&error];
+    if (!shaderString) {
+        NSLog(@"Error loading shader: %@", error.localizedDescription);
+        NSLog(@"shader name: %@", name);
+        return nil;
+    }
+    return shaderString;
+}
+
+GLuint compileShader(GLenum type, NSString *source)
+{
+    GLuint shader = glCreateShader(type);
+    const char *sourceUTF8 = [source UTF8String];
+    glShaderSource(shader, 1, &sourceUTF8, NULL);
+    glCompileShader(shader);
+
+    GLint status;
+    glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
+    if (status == GL_FALSE) {
+        GLchar message[256];
+        glGetShaderInfoLog(shader, sizeof(message), 0, &message[0]);
+        NSString *messageString = [NSString stringWithUTF8String:message];
+        NSLog(@"Failed to compile shader: %@", messageString);
+        return 0;
+    }
+
+    return shader;
+}
+
+
 - (void)startAnimation
 {
     [super startAnimation];
@@ -87,7 +152,20 @@
     [super drawRect:rect];
     [self.openGLContext makeCurrentContext];
 
-    glClearColor(1.0, 0.0, 0.0, 1.0);
+    GLfloat vertices[] = {
+        -1.0f,  1.0f,
+        -1.0f, -1.0f,
+        1.0f, -1.0f,
+        1.0f,  1.0f
+    };
+
+    GLuint vertexBuffer;
+    glGenBuffers(1, &vertexBuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+
+    /*glClearColor(1.0, 0.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glLoadIdentity();
@@ -101,7 +179,24 @@
         glVertex3f(1.0, -1.0, 0.0); // Bottom Right
     glEnd();
 
+    glFlush();*/
+
+    glClearColor(1.0, 0.0, 0.0, 1.0);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    glUseProgram(self.program);
+
+    //GLfloat time = self.animationTimeInterval;
+    glUniform1f(glGetUniformLocation(self.program, "time"), (GLfloat)((float)self.time));
+
+    glEnableVertexAttribArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
+    glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+    glDisableVertexAttribArray(0);
+
     glFlush();
+
     [self.openGLContext flushBuffer];
     [self.openGLContext update];
     /*if (self.previousFrame) {
@@ -123,6 +218,7 @@
 
 - (void) animateOneFrame
 {
+    self.time += 1.0 / 30.0;
     /*NSBezierPath *path;
     NSRect rect;
     NSSize size;

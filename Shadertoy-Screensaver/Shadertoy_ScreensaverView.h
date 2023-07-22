@@ -14,5 +14,7 @@
 @property BOOL shouldFill;
 @property (strong) NSImage *previousFrame;
 @property NSOpenGLContext *openGLContext;
+@property GLuint program;
+@property double time;
 
 @end
