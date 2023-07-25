@@ -113,7 +113,7 @@ vec4 starfield(vec2 C) {
 void mainImage( out vec4 fragColor, in vec2 fragCoord )
 {
     // Normalized pixel coordinates (from 0 to 1)
-    vec2 uv = fragCoord;///iResolution.xy;
+    vec2 uv = fragCoord / iResolution.xy;
  
     // Time varying pixel color
     //vec3 col = 0.5 + 0.5*cos(iTime+uv.xyx+vec3(0,2,4));
@@ -137,7 +137,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
  
  
  
-    col = vec4(mix(col.xyz, mg.xyz, mg.w), 1.0);// + clamp(length(mUV) - 0.2, 0.0, 1.0)*starfield(fragCoord * iResolution.xy)+ length(mUV)*vec4(0.3, 0.0, 0.0, 1.0);
+    col = vec4(mix(col.xyz, mg.xyz, mg.w), 1.0);// + clamp(length(mUV) - 0.2, 0.0, 1.0)*starfield(fragCoord)+ length(mUV)*vec4(0.3, 0.0, 0.0, 1.0);
  
  
  
