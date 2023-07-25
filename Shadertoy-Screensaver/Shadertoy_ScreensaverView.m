@@ -21,7 +21,7 @@ void checkError(int lineNumber);
 - (instancetype)initWithFrame:(NSRect)frame isPreview:(BOOL)isPreview
 {
     self = [super initWithFrame:frame isPreview:isPreview];
-    NSLog( @"Shadertoy: Hello from initWithFrame" );
+    NSLog( @"Hello from initWithFrame" );
     if (self) {
         self.time = 0.0;
         NSOpenGLPixelFormatAttribute attrs[] =
@@ -43,7 +43,7 @@ void checkError(int lineNumber);
         
         if (!glView)
         {             
-            NSLog( @"Shadertoy: Couldn't initialize OpenGL view." );
+            NSLog( @"Couldn't initialize OpenGL view." );
             return nil;
         } 
 
@@ -74,7 +74,7 @@ void checkError(int lineNumber);
         NSLog(@"Gl version: %s", glGetString(GL_VERSION));
 
         [self setAnimationTimeInterval:1/30.0];
-        NSLog(@"Shadertoy: Setup successful");
+        NSLog(@"Setup successful");
     }
     
     return self;
@@ -152,7 +152,7 @@ GLuint compileShader(GLenum type, NSString *source)
 
 - (void)drawRect:(NSRect)rect
 {
-    NSLog(@"Shadertoy: drawRect");
+    NSLog(@"drawRect");
     [super drawRect:rect];
     [self.openGLContext makeCurrentContext];
 
