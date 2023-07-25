@@ -8,7 +8,6 @@
 #import "Shadertoy_ScreensaverView.h"
 
 #import <OpenGL/gl3.h>
-#import <OpenGL/glu.h>
 
 void checkError(int lineNumber);
 
@@ -155,7 +154,7 @@ GLuint compileShader(GLenum type, NSString *source)
 {
     NSLog(@"Shadertoy: drawRect");
     [super drawRect:rect];
-    [self.openGLContext makeCurrentContext]; // Might be called twice unnecessarily
+    [self.openGLContext makeCurrentContext];
 
     GLfloat vertices[] = {
         -1.0f,  1.0f,
@@ -163,7 +162,6 @@ GLuint compileShader(GLenum type, NSString *source)
         1.0f, -1.0f,
         1.0f,  1.0f
     };
-    
 
     // TODO only initialize these once
     // VAO
@@ -196,7 +194,7 @@ GLuint compileShader(GLenum type, NSString *source)
 
     glUniform3f(iResolutionLocation, width, height, 1.0);
 
-    GLint posAttrib = 0; //glGetAttribLocation(self.program, "position");
+    GLint posAttrib = glGetAttribLocation(self.program, "position");
     glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
     glEnableVertexAttribArray(posAttrib);
     
@@ -223,6 +221,7 @@ GLuint compileShader(GLenum type, NSString *source)
 
 - (void) animateOneFrame
 {
+    // If not accurately called at animationTimeInterval this could mess with the timing
     self.time += self.animationTimeInterval;
 
     [self setNeedsDisplay:YES];
