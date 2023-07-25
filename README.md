@@ -1,5 +1,7 @@
 # Shadertoy Screensaver
 
+![Screenshot of the screensaver](screenshot/screenshot.png?raw=true)
+
 The goal with this project would be to load an arbitrary [Shadertoy](https://shadertoy.com) shader by giving an URL and
 use it as a macos screensaver. First goal is to just be able to load a single buffer shader
 but more features will be added in the future.
