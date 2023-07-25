@@ -81,26 +81,24 @@ vec3 sunRays(vec2 uv, float time)
     return (c * ray1 + (1.0 - c) * ray2) * 0.4 * clamp(1.0-length(p*2.0), 0.0, 1.0) * clamp(length(p*3.0), 0.0, 1.0);
 }
  
- 
- 
 //Shamelessly copied from https://www.shadertoy.com/view/WtVBRG
 #define R(p,a,r)mix(a*dot(p,a),p,cos(r))+sin(r)*cross(p,a)
 vec4 starfield(vec2 C) {
     vec4 O=vec4(0);
-    vec3 p,r=iResolution,
+    vec3 p=vec3(0.0),r=iResolution,
     d=normalize(vec3((C-.5*r.xy)/r.y,1));  
-    for(float i=0.,g,e,s;
+    for(float i=0.,g=0.,e=0.,s=0.;
         ++i<99.;
         O.xyz+=5e-5*abs(cos(vec3(3,2,1)+log(s*9.)))/dot(p,p)/e
     )
     {
         p=g*d;
-        p.z+=iTime*.03;
+        p.z+=iTime*.05;
         p=R(p,normalize(vec3(1,2,3)),.5);   
         s=2.5;
         p=abs(mod(p-1.,2.)-1.)-1.;
- 
-        for(int j=0;j++<8;)
+        
+        for(int j=0;j++<10;)
             p=1.-abs(p-vec3(-1.)),
             s*=e=-1.8/dot(p,p),
             p=p*e-.7;
@@ -137,7 +135,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
  
  
  
-    col = vec4(mix(col.xyz, mg.xyz, mg.w), 1.0);// + clamp(length(mUV) - 0.2, 0.0, 1.0)*starfield(fragCoord)+ length(mUV)*vec4(0.3, 0.0, 0.0, 1.0);
+    col = vec4(mix(col.xyz, mg.xyz, mg.w), 1.0) + clamp(length(mUV) - 0.2, 0.0, 1.0)*starfield(fragCoord)+ length(mUV)*vec4(0.3, 0.0, 0.0, 1.0);
  
  
  
