@@ -155,7 +155,7 @@ GLuint compileShader(GLenum type, NSString *source)
 {
     NSLog(@"Shadertoy: drawRect");
     [super drawRect:rect];
-    [self.openGLContext makeCurrentContext];
+    [self.openGLContext makeCurrentContext]; // Might be called twice unnecessarily
 
     GLfloat vertices[] = {
         -1.0f,  1.0f,
@@ -165,6 +165,7 @@ GLuint compileShader(GLenum type, NSString *source)
     };
     
 
+    // TODO only initialize these once
     // VAO
     GLuint vertexArrayObject;
     glGenVertexArrays(1, &vertexArrayObject);
@@ -192,8 +193,6 @@ GLuint compileShader(GLenum type, NSString *source)
     GLint iResolutionLocation = glGetUniformLocation(self.program, "iResolution");
     float width = self.bounds.size.width;
     float height = self.bounds.size.height;
-
-    NSLog(@"Width: %f height: %f", width, height);
 
     glUniform3f(iResolutionLocation, width, height, 1.0);
 

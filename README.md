@@ -1,6 +1,6 @@
 # Shadertoy Screensaver
 
-The goal with this project would be to load an arbitrary [shadertoy](https://shadertoy.com) shader by giving an URL and
+The goal with this project would be to load an arbitrary [Shadertoy](https://shadertoy.com) shader by giving an URL and
 use it as a macos screensaver. First goal is to just be able to load a single buffer shader
 but more features will be added in the future.
 
@@ -10,4 +10,8 @@ I've heavily utilized ChatGPT while developing this app as I haven't used Object
 previously.
 
 ## TODO
-* One to one mapping of GL uniforms to the ones used in shadertoy
+* One to one mapping of GL uniforms to the ones used in Shadertoy
+* Multiple buffers (now just supports on image shaders)
+* Execute arbitrary shaders from a Shadertoy URL
+* Clean up code
+* Preview of the screensaver
