@@ -71,6 +71,14 @@ void checkError(int lineNumber);
 
         glUseProgram(self.program);
 
+        GLuint vbo;
+        GLuint vao;
+        glGenVertexArrays(1, &vao);
+        glGenBuffers(1, &vbo);
+
+        self.vertexArrayObject = vao;
+        self.vertexBufferObject = vbo;
+
         NSLog(@"Gl version: %s", glGetString(GL_VERSION));
 
         [self setAnimationTimeInterval:1/30.0];
@@ -143,11 +151,13 @@ GLuint compileShader(GLenum type, NSString *source)
 - (void)startAnimation
 {
     [super startAnimation];
+    NSLog(@"Start animation");
 }
 
 - (void)stopAnimation
 {
     [super stopAnimation];
+    NSLog(@"Stop animation");
 }
 
 - (void)drawRect:(NSRect)rect
@@ -163,18 +173,10 @@ GLuint compileShader(GLenum type, NSString *source)
         1.0f,  1.0f
     };
 
-    // TODO only initialize these once
-    // VAO
-    GLuint vertexArrayObject;
-    glGenVertexArrays(1, &vertexArrayObject);
-    glBindVertexArray(vertexArrayObject);
-
+    glBindVertexArray(self.vertexArrayObject);
     GLLog();
     
-    // VBO
-    GLuint vertexBufferObject;
-    glGenBuffers(1, &vertexBufferObject);
-    glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObject);
+    glBindBuffer(GL_ARRAY_BUFFER, self.vertexBufferObject);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
     GLLog();
 
@@ -206,9 +208,9 @@ GLuint compileShader(GLenum type, NSString *source)
 
     glDisableVertexAttribArray(posAttrib);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glDeleteBuffers(1, &vertexBufferObject);
+    //glDeleteBuffers(1, &self.vertexBufferObject);
     glBindVertexArray(0);
-    glDeleteVertexArrays(1, &vertexArrayObject);
+    //glDeleteVertexArrays(1, &self.vertexArrayObject);
     GLLog();
 
     [self.openGLContext flushBuffer];

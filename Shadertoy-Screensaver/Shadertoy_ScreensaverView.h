@@ -12,5 +12,7 @@
 @property NSOpenGLContext *openGLContext;
 @property GLuint program;
 @property double time;
+@property GLuint vertexArrayObject;
+@property GLuint vertexBufferObject;
 
 @end
