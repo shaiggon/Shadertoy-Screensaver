@@ -1,6 +1,6 @@
 #version 410 core
 
-//uniform vec3  iResolution;
+uniform vec3  iResolution;
 uniform float iTime;
 
 //in vec3 ourColor;
@@ -19,7 +19,7 @@ out vec4 FragColor_;
     fragColor = vec4(r, g, uv.y, 1.0);
 }*/
 
-/*vec4 sun(vec2 uv, float time)
+vec4 sun(vec2 uv, float time)
 {
     vec3 sunUp = vec3(250.0/255.0, 242.0/255.0, 0.0);
     vec3 sunDown = vec3(252.0/255.0, 0.0, 140.0/255.0);
@@ -107,13 +107,13 @@ vec4 starfield(vec2 C) {
             g+=e=abs(p.z)/s+.001;
      }
      return O /= 16.0;
-}*/
+}
  
  
-/*void mainImage( out vec4 fragColor, in vec2 fragCoord )
+void mainImage( out vec4 fragColor, in vec2 fragCoord )
 {
     // Normalized pixel coordinates (from 0 to 1)
-    vec2 uv = fragCoord/iResolution.xy;
+    vec2 uv = fragCoord;///iResolution.xy;
  
     // Time varying pixel color
     //vec3 col = 0.5 + 0.5*cos(iTime+uv.xyx+vec3(0,2,4));
@@ -137,18 +137,19 @@ vec4 starfield(vec2 C) {
  
  
  
-    col = vec4(mix(col.xyz, mg.xyz, mg.w), 1.0) + clamp(length(mUV) - 0.2, 0.0, 1.0)*starfield(fragCoord)+ length(mUV)*vec4(0.3, 0.0, 0.0, 1.0);
+    col = vec4(mix(col.xyz, mg.xyz, mg.w), 1.0);// + clamp(length(mUV) - 0.2, 0.0, 1.0)*starfield(fragCoord * iResolution.xy)+ length(mUV)*vec4(0.3, 0.0, 0.0, 1.0);
  
  
  
     // Output to screen
-    vec4 col = vec4(0.0, 1.0, uv.x, 1.0);
+    //vec4 col = vec4(0.0, 1.0, uv.x, 1.0);
     fragColor = col;
-}*/
+}
 
 void main() {
     vec2 fragCoord = FragCoord_.xy;
-    vec4 fragColor = vec4(0.0, 1.0, 0.0, 1.0);
-    //mainImage(fragColor, fragCoord);
+    vec2 uv = fragCoord;// / iResolution.xy;
+    vec4 fragColor = vec4(uv.x, 1.0, uv.y, 1.0);
+    mainImage(fragColor, fragCoord);
     FragColor_ = fragColor;
 }

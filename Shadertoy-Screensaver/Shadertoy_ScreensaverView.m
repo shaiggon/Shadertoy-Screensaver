@@ -14,14 +14,6 @@ void checkError(int lineNumber);
 
 #define GLLog(...) checkError(__LINE__)
 
-// Define a function pointer type for our function
-//typedef void (*glGenVertexArraysProc)(GLsizei, GLuint*);
-//typedef void (*glBindVertexArrayProc)(GLsizei);
-
-// Get a pointer to the glGenVertexArrays and glBindVertexArray functions
-//glGenVertexArraysProc glGenVertexArrays = NSOpenGLGetProcAddress("glGenVertexArrays");
-//glBindVertexArrayProc glBindVertexArray = NSOpenGLGetProcAddress("glBindVertexArray");
-
 @implementation Shadertoy_ScreensaverView
 {
     NSOpenGLView *glView;
@@ -44,36 +36,27 @@ void checkError(int lineNumber);
             0
         };
 
-        GLLog();
-
         NSOpenGLPixelFormat *format = [[NSOpenGLPixelFormat alloc] initWithAttributes:attrs];
         self.openGLContext = [[NSOpenGLContext alloc] initWithFormat:format shareContext:nil];
         [self.openGLContext setView:self];
         glView = [[NSOpenGLView alloc] initWithFrame:NSZeroRect 
                                    pixelFormat:format];
         
-        //[self.openGLContext makeCurrentContext];
-		
         if (!glView)
         {             
             NSLog( @"Shadertoy: Couldn't initialize OpenGL view." );
             return nil;
         } 
-        GLLog();
-
 
         [self addSubview:glView]; 
-        GLLog();
         [self setUpOpenGL];
-        GLLog();
 
         self.program = glCreateProgram();
-        GLLog();
 
+        GLLog();
 
         GLuint vertexShader = compileShader(GL_VERTEX_SHADER, [self loadShader:@"vertexshader.glsl"]);
         GLuint fragmentShader = compileShader(GL_FRAGMENT_SHADER, [self loadShader:@"fragmentshader.glsl"]);
-
 
         glAttachShader(self.program, vertexShader);
         glAttachShader(self.program, fragmentShader);
@@ -91,41 +74,12 @@ void checkError(int lineNumber);
 
         NSLog(@"Gl version: %s", glGetString(GL_VERSION));
 
-        /*GLuint vao = self.vertexArrayObject;
-        GLuint vbo = self.vertexBuffer;
-        glGenVertexArrays(1, &vao);
-        glGenBuffers(1, &vbo);
-
-        self.vertexArrayObject = vao;
-        self.vertexBuffer = vbo;*/
-        
-        // Somewhere in your setup code
-        /*if (glDebugMessageCallback) {
-            NSLog(@"Register OpenGL debug callback ");
-            glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
-            glDebugMessageCallback(MessageCallback, nullptr);
-            GLuint unusedIds = 0;
-            glDebugMessageControl(GL_DONT_CARE,
-                                  GL_DONT_CARE,
-                                  GL_DONT_CARE,
-                                  0,
-                                  &unusedIds,
-                                  true);
-        }*/
-
         [self setAnimationTimeInterval:1/30.0];
         NSLog(@"Shadertoy: Setup successful");
     }
     
     return self;
 }
-
-/*void MessageCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam)
-{
-    fprintf(stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
-            (type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""),
-            type, severity, message);
-}*/
 
 // Print errors until no errors in line
 void checkError(int lineNumber)
@@ -136,7 +90,6 @@ void checkError(int lineNumber)
         err = glGetError();
     }
 }
-
 
 - (NSString *)loadShaderAbsolutePath:(NSString *)path
 {
@@ -188,7 +141,6 @@ GLuint compileShader(GLenum type, NSString *source)
     return shader;
 }
 
-
 - (void)startAnimation
 {
     [super startAnimation];
@@ -213,15 +165,12 @@ GLuint compileShader(GLenum type, NSString *source)
     };
     
 
-    //glBindVertexArray(self.vertexArrayObject);
     // VAO
     GLuint vertexArrayObject;
     glGenVertexArrays(1, &vertexArrayObject);
     glBindVertexArray(vertexArrayObject);
 
     GLLog();
-
-    //self.checkError;
     
     // VBO
     GLuint vertexBufferObject;
@@ -233,8 +182,6 @@ GLuint compileShader(GLenum type, NSString *source)
     glClearColor(1.0, 0.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     GLLog();
-    
-    //self.checkError;
 
     glUseProgram(self.program);
     GLLog();
@@ -242,30 +189,23 @@ GLuint compileShader(GLenum type, NSString *source)
     glUniform1f(glGetUniformLocation(self.program, "iTime"), (GLfloat)((float)self.time));
     GLLog();
 
-    //GLint iResolutionLocation = glGetUniformLocation(self.program, "iResolution");
-    //float width = self.bounds.size.width;
-    //float height = self.bounds.size.height;
-    //glUniform3f(iResolutionLocation, width, height, 1.0);
-    
-    //self.checkError;
+    GLint iResolutionLocation = glGetUniformLocation(self.program, "iResolution");
+    float width = self.bounds.size.width;
+    float height = self.bounds.size.height;
+
+    NSLog(@"Width: %f height: %f", width, height);
+
+    glUniform3f(iResolutionLocation, width, height, 1.0);
 
     GLint posAttrib = 0; //glGetAttribLocation(self.program, "position");
-    //glBindBuffer(GL_ARRAY_BUFFER, self.vertexBuffer);
     glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
     glEnableVertexAttribArray(posAttrib);
     
     GLLog();
-    //self.checkError;
 
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
     glFlush();
     GLLog();
-
-    //glDisableVertexAttribArray(0);
-
-    //glBindVertexArray(0);
-
-    //self.checkError;
 
     glDisableVertexAttribArray(posAttrib);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -278,11 +218,9 @@ GLuint compileShader(GLenum type, NSString *source)
     [self.openGLContext update];
 }
 
-
 - (BOOL)isOpaque {
     return NO;
 }
-
 
 - (void) animateOneFrame
 {
@@ -305,8 +243,6 @@ GLuint compileShader(GLenum type, NSString *source)
 {  
   [self.openGLContext makeCurrentContext];
         GLLog();
-  //glShadeModel( GL_SMOOTH );
-        GLLog();
   glClearColor( 0.0f, 0.0f, 0.0f, 0.0f );
         GLLog();
   glClearDepth( 1.0f ); 
@@ -314,8 +250,6 @@ GLuint compileShader(GLenum type, NSString *source)
   glEnable( GL_DEPTH_TEST );
         GLLog();
   glDepthFunc( GL_LEQUAL );
-        GLLog();
-  //glHint( GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST );
         GLLog();
 }
 
