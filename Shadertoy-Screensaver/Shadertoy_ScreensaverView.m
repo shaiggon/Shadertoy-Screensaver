@@ -24,6 +24,9 @@ void checkError(int lineNumber);
     NSLog( @"Hello from initWithFrame" );
     if (self) {
         self.time = 0.0;
+        self.iFrame = 0;
+
+
         NSOpenGLPixelFormatAttribute attrs[] =
         {
             NSOpenGLPFAAccelerated,
@@ -190,6 +193,10 @@ GLuint compileShader(GLenum type, NSString *source)
     glUniform1f(glGetUniformLocation(self.program, "iTime"), (GLfloat)((float)self.time));
     GLLog();
 
+    glUniform1f(glGetUniformLocation(self.program, "iFrame"), (GLint)self.iFrame);
+    glUniform1f(glGetUniformLocation(self.program, "iFrameRate"), (GLfloat)((float)(1.0 / self.animationTimeInterval)));
+    glUniform1f(glGetUniformLocation(self.program, "iTimeDelta"), (GLfloat)((float)(self.animationTimeInterval)));
+
     GLint iResolutionLocation = glGetUniformLocation(self.program, "iResolution");
     float width = self.bounds.size.width;
     float height = self.bounds.size.height;
@@ -225,6 +232,7 @@ GLuint compileShader(GLenum type, NSString *source)
 {
     // If not accurately called at animationTimeInterval this could mess with the timing
     self.time += self.animationTimeInterval;
+    self.iFrame += 1;
 
     [self setNeedsDisplay:YES];
 }
