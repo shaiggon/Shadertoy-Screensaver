@@ -6,6 +6,7 @@
 //
 
 #import <ScreenSaver/ScreenSaver.h>
+#import "../Shadertoy_ScreensaverConfigSheet.h"
 
 @interface Shadertoy_ScreensaverView : ScreenSaverView
 
@@ -17,5 +18,7 @@
 
 @property GLuint vertexArrayObject;
 @property GLuint vertexBufferObject;
+
+@property Shadertoy_ScreensaverConfigSheet *configSheet;
 
 @end

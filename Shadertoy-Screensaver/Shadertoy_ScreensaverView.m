@@ -239,12 +239,16 @@ GLuint compileShader(GLenum type, NSString *source)
 
 - (BOOL)hasConfigureSheet
 {
-    return NO;
+    return YES;
 }
 
 - (NSWindow*)configureSheet
 {
-    return nil;
+    if (!self.configSheet) {
+        self.configSheet = [[Shadertoy_ScreensaverConfigSheet alloc] initWithWindowNibName:@"Shadertoy_ScreensaverConfigSheet"];
+    }
+    
+    return self.configSheet.window;
 }
 
 - (void)setUpOpenGL
