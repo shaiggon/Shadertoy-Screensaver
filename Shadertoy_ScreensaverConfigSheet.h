@@ -13,6 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, weak) IBOutlet NSTextField *textField;
 @property (weak) IBOutlet NSTextField *shadertoyUrlTextField;
+@property (weak) IBOutlet NSTextField *shadertoyAPIKeyTextField;
+
 
 @end
 
