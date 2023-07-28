@@ -12,6 +12,9 @@
 		9812FC6D2A6AF1980041D5DF /* fragmentshader.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 9812FC6B2A6AF1980041D5DF /* fragmentshader.glsl */; };
 		9812FC6E2A6AF1980041D5DF /* vertexshader.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 9812FC6C2A6AF1980041D5DF /* vertexshader.glsl */; };
 		9812FC712A6D430A0041D5DF /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9812FC702A6D430A0041D5DF /* OpenGL.framework */; };
+		98F648332A7151DE00E550DB /* Shadertoy_ScreensaverConfigSheet.h in Headers */ = {isa = PBXBuildFile; fileRef = 98F648302A7151DE00E550DB /* Shadertoy_ScreensaverConfigSheet.h */; };
+		98F648342A7151DE00E550DB /* Shadertoy_ScreensaverConfigSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 98F648312A7151DE00E550DB /* Shadertoy_ScreensaverConfigSheet.m */; };
+		98F648352A7151DE00E550DB /* Shadertoy_ScreensaverConfigSheet.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98F648322A7151DE00E550DB /* Shadertoy_ScreensaverConfigSheet.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,6 +24,9 @@
 		9812FC6B2A6AF1980041D5DF /* fragmentshader.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = fragmentshader.glsl; path = "Shadertoy-Screensaver/fragmentshader.glsl"; sourceTree = "<group>"; };
 		9812FC6C2A6AF1980041D5DF /* vertexshader.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = vertexshader.glsl; path = "Shadertoy-Screensaver/vertexshader.glsl"; sourceTree = "<group>"; };
 		9812FC702A6D430A0041D5DF /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		98F648302A7151DE00E550DB /* Shadertoy_ScreensaverConfigSheet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Shadertoy_ScreensaverConfigSheet.h; sourceTree = "<group>"; };
+		98F648312A7151DE00E550DB /* Shadertoy_ScreensaverConfigSheet.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Shadertoy_ScreensaverConfigSheet.m; sourceTree = "<group>"; };
+		98F648322A7151DE00E550DB /* Shadertoy_ScreensaverConfigSheet.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Shadertoy_ScreensaverConfigSheet.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -38,6 +44,9 @@
 		9812FC552A619A860041D5DF = {
 			isa = PBXGroup;
 			children = (
+				98F648302A7151DE00E550DB /* Shadertoy_ScreensaverConfigSheet.h */,
+				98F648312A7151DE00E550DB /* Shadertoy_ScreensaverConfigSheet.m */,
+				98F648322A7151DE00E550DB /* Shadertoy_ScreensaverConfigSheet.xib */,
 				9812FC6B2A6AF1980041D5DF /* fragmentshader.glsl */,
 				9812FC6C2A6AF1980041D5DF /* vertexshader.glsl */,
 				9812FC612A619A860041D5DF /* Shadertoy-Screensaver */,
@@ -79,6 +88,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9812FC632A619A860041D5DF /* Shadertoy_ScreensaverView.h in Headers */,
+				98F648332A7151DE00E550DB /* Shadertoy_ScreensaverConfigSheet.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -142,6 +152,7 @@
 			files = (
 				9812FC6E2A6AF1980041D5DF /* vertexshader.glsl in Resources */,
 				9812FC6D2A6AF1980041D5DF /* fragmentshader.glsl in Resources */,
+				98F648352A7151DE00E550DB /* Shadertoy_ScreensaverConfigSheet.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -153,6 +164,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9812FC652A619A860041D5DF /* Shadertoy_ScreensaverView.m in Sources */,
+				98F648342A7151DE00E550DB /* Shadertoy_ScreensaverConfigSheet.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
