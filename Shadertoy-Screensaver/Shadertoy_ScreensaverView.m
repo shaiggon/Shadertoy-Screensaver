@@ -70,7 +70,12 @@ static NSString * const MyModuleName = @"diracdrifter.Shadertoy-Screensaver";
         GLLog();
 
         GLuint vertexShader = compileShader(GL_VERTEX_SHADER, [self loadShader:@"vertexshader.glsl"]);
-        GLuint fragmentShader = compileShader(GL_FRAGMENT_SHADER, [self loadShader:@"fragmentshader.glsl"]);
+
+        NSString *header = [self createShadertoyHeader];
+        NSString *fragmentShaderString = [header stringByAppendingString:[self loadShader:@"fragmentshader.glsl"]];
+        NSLog(@"shader string: %@", fragmentShaderString);
+
+        GLuint fragmentShader = compileShader(GL_FRAGMENT_SHADER, fragmentShaderString);
 
         glAttachShader(self.program, vertexShader);
         glAttachShader(self.program, fragmentShader);
@@ -177,7 +182,7 @@ GLuint compileShader(GLenum type, NSString *source)
 
 - (void)drawRect:(NSRect)rect
 {
-    NSLog(@"drawRect");
+    //NSLog(@"drawRect");
     [super drawRect:rect];
     [self.openGLContext makeCurrentContext];
 
@@ -280,6 +285,23 @@ GLuint compileShader(GLenum type, NSString *source)
         GLLog();
   glDepthFunc( GL_LEQUAL );
         GLLog();
+}
+
+- (NSString*)createShadertoyHeader
+{
+    NSString *header = @"#version 410 core"
+                        "\nuniform vec3 iResolution;\n"
+                        "uniform float iTime;\n"
+                        "void mainImage( out vec4 c, in vec2 f );\n"
+                        "\nout vec4 shadertoy_out_color;\n"
+                        "void main( void ){"
+                        "vec4 color = vec4(1e20);"
+                        "mainImage( color, (gl_FragCoord.xy + vec2(1.0)) * 0.5 );"
+                        "shadertoy_out_color = vec4(color.xyz,1.0);"
+                        "}\n";
+    //header += @"\nuniform vec3 iResolution;";
+    //header += @"uniform vec3 iTime;";
+    return header;
 }
 
 @end
