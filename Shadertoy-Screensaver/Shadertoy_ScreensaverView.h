@@ -20,5 +20,6 @@
 @property GLuint vertexBufferObject;
 
 @property Shadertoy_ScreensaverConfigSheet *configSheet;
+//@property IBOutlet id configSheet;
 
 @end

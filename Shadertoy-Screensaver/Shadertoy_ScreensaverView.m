@@ -18,14 +18,26 @@ void checkError(int lineNumber);
     NSOpenGLView *glView;
 }
 
+static NSString * const MyModuleName = @"diracdrifter.Shadertoy-Screensaver";
+
 - (instancetype)initWithFrame:(NSRect)frame isPreview:(BOOL)isPreview
 {
     self = [super initWithFrame:frame isPreview:isPreview];
     NSLog( @"Hello from initWithFrame" );
     if (self) {
+        ScreenSaverDefaults *defaults;
+
+        defaults = [ScreenSaverDefaults defaultsForModuleWithName:MyModuleName];
+
+        // Register our default values
+        [defaults registerDefaults:[NSDictionary dictionaryWithObjectsAndKeys:
+                   @"NO", @"DrawFilledShapes",
+                   @"NO", @"DrawOutlinedShapes",
+                   @"YES", @"DrawBoth",
+                   nil]];
+
         self.time = 0.0;
         self.iFrame = 0;
-
 
         NSOpenGLPixelFormatAttribute attrs[] =
         {
@@ -244,11 +256,38 @@ GLuint compileShader(GLenum type, NSString *source)
 
 - (NSWindow*)configureSheet
 {
+    ScreenSaverDefaults *defaults;
+
+    defaults = [ScreenSaverDefaults defaultsForModuleWithName:MyModuleName];
+
     if (!self.configSheet) {
         self.configSheet = [[Shadertoy_ScreensaverConfigSheet alloc] initWithWindowNibName:@"Shadertoy_ScreensaverConfigSheet"];
+
+        /*if (![NSBundle loadNibNamed:@"Shadertoy_ScreensaverConfigSheet" owner:self]) {
+            NSLog( @"Failed to load configure sheet." );
+            NSBeep();
+        }*/
     }
-    
+
     return self.configSheet.window;
+}
+
+- (IBAction)cancelClick:(id)sender
+{
+    [[NSApplication sharedApplication] endSheet:self.configSheet];
+}
+
+- (IBAction) okClick: (id)sender
+{
+    ScreenSaverDefaults *defaults;
+
+    defaults = [ScreenSaverDefaults defaultsForModuleWithName:MyModuleName];
+
+    // Save the settings to disk
+    [defaults synchronize];
+
+    // Close the sheet
+    [[NSApplication sharedApplication] endSheet:self.configSheet];
 }
 
 - (void)setUpOpenGL
