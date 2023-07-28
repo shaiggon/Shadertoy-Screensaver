@@ -1,23 +1,31 @@
-#version 410 core
-
-uniform vec3  iResolution;
+/*#version 410 core
+uniform vec3 iResolution;
 uniform float iTime;
+void mainImage( out vec4 c, in vec2 f );
+
+out vec4 shadertoy_out_color;
+void main( ){vec4 color = vec4(1e20);mainImage( color, (gl_FragCoord.xy + vec2(1.0)) * 0.5 );shadertoy_out_color = vec4(color.xyz,1.0);}*/
+//#version 410 core
+
+//uniform vec3  iResolution;
+//uniform float iTime;
 
 //in vec3 ourColor;
 //in vec3 gl_FragCoord;
-in vec4 FragCoord_;
+//in vec4 FragCoord_;
 
 //out vec4 FragColor;
-out vec4 FragColor_;
+
+//out vec4 shadertoy_out_color;
 
 //void main()
-/*void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{
-    vec2 uv = fragCoord/iResolution.xy;
-    float r = 0.5 * (1.0 + sin(time));
-    float g = 0.5 * (1.0 + cos(time + 23.0));
-    fragColor = vec4(r, g, uv.y, 1.0);
-}*/
+//void mainImage( out vec4 fragColor, in vec2 fragCoord )
+//{
+//    vec2 uv = fragCoord/iResolution.xy;
+//    float r = 0.5 * (1.0 + sin(time));
+//    float g = 0.5 * (1.0 + cos(time + 23.0));
+//    fragColor = vec4(r, g, uv.y, 1.0);
+//}
 
 vec4 sun(vec2 uv, float time)
 {
@@ -144,10 +152,10 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     fragColor = col;
 }
 
-void main() {
-    vec2 fragCoord = FragCoord_.xy;
+/*void main() {
+    vec2 fragCoord = (gl_FragCoord.xy + vec2(1.0)) * 0.5;//FragCoord_.xy;
     vec2 uv = fragCoord;// / iResolution.xy;
     vec4 fragColor = vec4(uv.x, 1.0, uv.y, 1.0);
     mainImage(fragColor, fragCoord);
-    FragColor_ = fragColor;
-}
+    shadertoy_out_color = fragColor;
+}*/
