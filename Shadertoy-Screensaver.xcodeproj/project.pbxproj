@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		980DFF022A740CC6004DAC2C /* shader.json in Resources */ = {isa = PBXBuildFile; fileRef = 980DFF012A740CC5004DAC2C /* shader.json */; };
 		9812FC632A619A860041D5DF /* Shadertoy_ScreensaverView.h in Headers */ = {isa = PBXBuildFile; fileRef = 9812FC622A619A860041D5DF /* Shadertoy_ScreensaverView.h */; };
 		9812FC652A619A860041D5DF /* Shadertoy_ScreensaverView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9812FC642A619A860041D5DF /* Shadertoy_ScreensaverView.m */; };
 		9812FC6D2A6AF1980041D5DF /* fragmentshader.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 9812FC6B2A6AF1980041D5DF /* fragmentshader.glsl */; };
@@ -18,6 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		980DFF012A740CC5004DAC2C /* shader.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = shader.json; sourceTree = "<group>"; };
 		9812FC5F2A619A860041D5DF /* Shadertoy-Screensaver.saver */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Shadertoy-Screensaver.saver"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9812FC622A619A860041D5DF /* Shadertoy_ScreensaverView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Shadertoy_ScreensaverView.h; sourceTree = "<group>"; };
 		9812FC642A619A860041D5DF /* Shadertoy_ScreensaverView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Shadertoy_ScreensaverView.m; sourceTree = "<group>"; };
@@ -66,6 +68,7 @@
 		9812FC612A619A860041D5DF /* Shadertoy-Screensaver */ = {
 			isa = PBXGroup;
 			children = (
+				980DFF012A740CC5004DAC2C /* shader.json */,
 				9812FC622A619A860041D5DF /* Shadertoy_ScreensaverView.h */,
 				9812FC642A619A860041D5DF /* Shadertoy_ScreensaverView.m */,
 			);
@@ -152,6 +155,7 @@
 			files = (
 				9812FC6E2A6AF1980041D5DF /* vertexshader.glsl in Resources */,
 				9812FC6D2A6AF1980041D5DF /* fragmentshader.glsl in Resources */,
+				980DFF022A740CC6004DAC2C /* shader.json in Resources */,
 				98F648352A7151DE00E550DB /* Shadertoy_ScreensaverConfigSheet.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

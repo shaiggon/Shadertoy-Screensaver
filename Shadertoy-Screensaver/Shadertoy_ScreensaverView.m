@@ -72,9 +72,14 @@ static NSString * const MyModuleName = @"diracdrifter.Shadertoy-Screensaver";
         GLuint vertexShader = compileShader(GL_VERTEX_SHADER, [self loadShader:@"vertexshader.glsl"]);
 
         NSString *header = [self createShadertoyHeader];
-        NSString *fragmentShaderString = [header stringByAppendingString:[self loadShader:@"fragmentshader.glsl"]];
-        NSLog(@"shader string: %@", fragmentShaderString);
 
+        NSDictionary *shaderInfo = [self JSONFromFile:@"shader.json"];
+        NSString *shadertoyCode = [self getShaderStringFromJSON:shaderInfo];
+
+        NSLog(@"shadertoyCode: %@", shadertoyCode);
+
+        //NSString *fragmentShaderString = [header stringByAppendingString:[self loadShader:@"fragmentshader.glsl"]];
+        NSString *fragmentShaderString = [header stringByAppendingString:shadertoyCode];
         GLuint fragmentShader = compileShader(GL_FRAGMENT_SHADER, fragmentShaderString);
 
         glAttachShader(self.program, vertexShader);
@@ -299,9 +304,28 @@ GLuint compileShader(GLenum type, NSString *source)
                         "mainImage( color, (gl_FragCoord.xy + vec2(1.0)) * 0.5 );"
                         "shadertoy_out_color = vec4(color.xyz,1.0);"
                         "}\n";
-    //header += @"\nuniform vec3 iResolution;";
-    //header += @"uniform vec3 iTime;";
     return header;
+}
+
+- (NSString *)getShaderStringFromJSON:(NSDictionary *)shaderInfo
+{
+    NSDictionary *shader = [shaderInfo objectForKey:@"Shader"];
+    //NSLog(@"shader version: %@", [shader objectForKey:@"ver"]);
+    NSDictionary *renderPass = [[shader objectForKey:@"renderpass"] objectAtIndex:0];
+    NSString *code = [renderPass objectForKey:@"code"];
+    return code;
+}
+
+// Read from string instead
+- (NSDictionary *)JSONFromFile:(NSString *)name
+{
+    NSString *path = [[NSBundle bundleForClass:[self class]] pathForResource:name ofType:nil];
+    //NSString *path = [[NSBundle mainBundle] pathForResource:@"colors" ofType:@"json"];
+    //NSError *error;
+    //NSString *jsonString = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:&error];
+    //NSLog(@"jsonString: %@", jsonString);
+    NSData *data = [NSData dataWithContentsOfFile:path];
+    return [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
 }
 
 @end
