@@ -76,6 +76,9 @@ static NSString * const MyModuleName = @"diracdrifter.Shadertoy-Screensaver";
         NSDictionary *shaderInfo = [self JSONFromFile:@"shader.json"];
         NSString *shadertoyCode = [self getShaderStringFromJSON:shaderInfo];
 
+        // TODO: Add getting shadertoy info here from defaults
+        // TODO: Add getting json dictionary from the shadertoy info
+
         NSLog(@"shadertoyCode: %@", shadertoyCode);
 
         //NSString *fragmentShaderString = [header stringByAppendingString:[self loadShader:@"fragmentshader.glsl"]];

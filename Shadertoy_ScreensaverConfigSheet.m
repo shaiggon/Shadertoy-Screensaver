@@ -37,9 +37,43 @@ static NSString * const MyModuleName = @"diracdrifter.Shadertoy-Screensaver";
     NSString *currentApiKey = [self.shadertoyAPIKeyTextField stringValue];
     [defaults setObject:currentApiKey forKey:@"ShadertoyApiKey"];
 
+    NSString *request = [self createRequestString:currentUrl apiKey:currentApiKey];
+    NSString *shaderJson = [self getShaderJson:request];
+    NSLog(@"shaderJson: %@", shaderJson);
+    //[defaults setObject:shaderJson forKey:@"ShaderJSON"];
+
     [defaults synchronize];
 
     [[NSApplication sharedApplication] endSheet:self.window];
+}
+
+- (NSString *)createRequestString:(NSString*)url apiKey:(NSString*)apiKey
+{
+    NSString *baseUrl = @"https://www.shadertoy.com/api/v1/shaders/";
+    NSString *urlWithShader = [baseUrl stringByAppendingString:url];
+    NSString *urlWithApiKey = [[urlWithShader stringByAppendingString:@"?key="] stringByAppendingString:apiKey];
+
+    return urlWithApiKey;
+}
+
+- (NSString *)getShaderJson:(NSString*)fullURL
+{
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    [request setHTTPMethod:@"GET"];
+    [request setURL:[NSURL URLWithString:fullURL]];
+    NSError *error;
+    NSHTTPURLResponse *responseCode = nil;
+
+    // Deprecated: see xcode warning
+    NSData *oResponseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&responseCode error:&error];
+
+    NSInteger statusCode = [responseCode statusCode];
+
+    if(statusCode != 200) {
+        NSLog(@"status code %i from request to %@", statusCode, fullURL);
+    }
+
+    return [[NSString alloc] initWithData:oResponseData encoding:NSUTF8StringEncoding];
 }
 
 @end
