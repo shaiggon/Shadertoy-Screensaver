@@ -21,11 +21,11 @@ static NSString * const MyModuleName = @"diracdrifter.Shadertoy-Screensaver";
 
     // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
     NSUserDefaults *defaults = [ScreenSaverDefaults defaultsForModuleWithName:MyModuleName];
-    NSString *shadertoyUrl = [defaults stringForKey:@"ShadertoyUrl"];
+    NSString *shadertoyShaderID = [defaults stringForKey:@"ShadertoyShaderID"];
     NSString *shadertoyApiKey = [defaults stringForKey:@"ShadertoyApiKey"];
     NSString *shaderJson = [defaults stringForKey:@"ShaderJSON"];
     NSLog(@"shaderJson in configsheet %@", shaderJson);
-    [self.shadertoyUrlTextField setStringValue:shadertoyUrl];
+    [self.shadertoyShaderIDTextField setStringValue:shadertoyShaderID];
     [self.shadertoyAPIKeyTextField setStringValue:shadertoyApiKey];
 }
 
@@ -33,8 +33,8 @@ static NSString * const MyModuleName = @"diracdrifter.Shadertoy-Screensaver";
 {
     // Save current text
     NSUserDefaults *defaults = [ScreenSaverDefaults defaultsForModuleWithName:MyModuleName];
-    NSString *currentUrl = [self.shadertoyUrlTextField stringValue];
-    [defaults setObject:currentUrl forKey:@"ShadertoyUrl"];
+    NSString *currentUrl = [self.shadertoyShaderIDTextField stringValue];
+    [defaults setObject:currentUrl forKey:@"ShadertoyShaderID"];
 
     NSString *currentApiKey = [self.shadertoyAPIKeyTextField stringValue];
     [defaults setObject:currentApiKey forKey:@"ShadertoyApiKey"];
