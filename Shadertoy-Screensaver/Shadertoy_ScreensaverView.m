@@ -29,13 +29,6 @@ static NSString * const MyModuleName = @"diracdrifter.Shadertoy-Screensaver";
 
         defaults = [ScreenSaverDefaults defaultsForModuleWithName:MyModuleName];
 
-        // Register our default values
-        [defaults registerDefaults:[NSDictionary dictionaryWithObjectsAndKeys:
-                   @"NO", @"DrawFilledShapes",
-                   @"NO", @"DrawOutlinedShapes",
-                   @"YES", @"DrawBoth",
-                   nil]];
-
         self.time = 0.0;
         self.iFrame = 0;
 
@@ -73,11 +66,23 @@ static NSString * const MyModuleName = @"diracdrifter.Shadertoy-Screensaver";
 
         NSString *header = [self createShadertoyHeader];
 
-        NSDictionary *shaderInfo = [self JSONFromFile:@"shader.json"];
-        NSString *shadertoyCode = [self getShaderStringFromJSON:shaderInfo];
+        // Uncomment to get shader from file
+        //NSDictionary *shaderInfo = [self JSONFromFile:@"shader.json"];
+        //NSString *shadertoyCode = [self getShaderStringFromJSON:shaderInfo];
 
-        // TODO: Add getting shadertoy info here from defaults
-        // TODO: Add getting json dictionary from the shadertoy info
+        // TODO: Add failsafe by loading shader from disk instead
+
+        NSLog(@"before getting default");
+        NSString *shadertoyJson = [defaults stringForKey:@"ShaderJSON"];
+        NSLog(@"shadertoyJson %@", shadertoyJson);
+
+        NSDictionary *shaderInfo = [self JSONFromString:shadertoyJson];
+
+        // TODO Remove this
+        NSDictionary *shaderfrominfo = [shaderInfo objectForKey:@"Shader"];
+        NSLog(@"shader version: %@", [shaderfrominfo objectForKey:@"ver"]);
+
+        NSString *shadertoyCode = [self getShaderStringFromJSON:shaderInfo];
 
         NSLog(@"shadertoyCode: %@", shadertoyCode);
 
@@ -328,6 +333,12 @@ GLuint compileShader(GLenum type, NSString *source)
     //NSString *jsonString = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:&error];
     //NSLog(@"jsonString: %@", jsonString);
     NSData *data = [NSData dataWithContentsOfFile:path];
+    return [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
+}
+
+- (NSDictionary *)JSONFromString:(NSString *)jsonString
+{
+    NSData *data = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
     return [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
 }
 

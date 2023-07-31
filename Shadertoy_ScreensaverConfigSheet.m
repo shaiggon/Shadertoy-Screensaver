@@ -23,6 +23,8 @@ static NSString * const MyModuleName = @"diracdrifter.Shadertoy-Screensaver";
     NSUserDefaults *defaults = [ScreenSaverDefaults defaultsForModuleWithName:MyModuleName];
     NSString *shadertoyUrl = [defaults stringForKey:@"ShadertoyUrl"];
     NSString *shadertoyApiKey = [defaults stringForKey:@"ShadertoyApiKey"];
+    NSString *shaderJson = [defaults stringForKey:@"ShaderJSON"];
+    NSLog(@"shaderJson in configsheet %@", shaderJson);
     [self.shadertoyUrlTextField setStringValue:shadertoyUrl];
     [self.shadertoyAPIKeyTextField setStringValue:shadertoyApiKey];
 }
@@ -40,7 +42,7 @@ static NSString * const MyModuleName = @"diracdrifter.Shadertoy-Screensaver";
     NSString *request = [self createRequestString:currentUrl apiKey:currentApiKey];
     NSString *shaderJson = [self getShaderJson:request];
     NSLog(@"shaderJson: %@", shaderJson);
-    //[defaults setObject:shaderJson forKey:@"ShaderJSON"];
+    [defaults setObject:shaderJson forKey:@"ShaderJSON"];
 
     [defaults synchronize];
 
