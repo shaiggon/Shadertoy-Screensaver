@@ -70,13 +70,18 @@ static NSString * const MyModuleName = @"diracdrifter.Shadertoy-Screensaver";
         NSLog(@"shadertoyJson %@", shadertoyJson);
 
         NSDictionary *shaderInfo = [self JSONFromString:shadertoyJson];
+        NSString *shadertoyCode = @"";
+        NSString *fragmentShaderString = @"";
+        GLuint fragmentShader = 0;
 
-        NSString *shadertoyCode = [self getShaderStringFromJSON:shaderInfo];
+        if ([shaderInfo objectForKey:@"Error"] == nil) {
+            shadertoyCode = [self getShaderStringFromJSON:shaderInfo];
 
-        NSLog(@"shadertoyCode: %@", shadertoyCode);
+            NSLog(@"shadertoyCode: %@", shadertoyCode);
 
-        NSString *fragmentShaderString = [header stringByAppendingString:shadertoyCode];
-        GLuint fragmentShader = compileShader(GL_FRAGMENT_SHADER, fragmentShaderString);
+            fragmentShaderString = [header stringByAppendingString:shadertoyCode];
+            fragmentShader = compileShader(GL_FRAGMENT_SHADER, fragmentShaderString);
+        }
 
         if (fragmentShader == 0) {
             NSLog(@"Error with fetched shader. Revert to shader loaded from disk");
@@ -85,7 +90,7 @@ static NSString * const MyModuleName = @"diracdrifter.Shadertoy-Screensaver";
             shadertoyCode = [self getShaderStringFromJSON:shaderInfo];
 
             fragmentShaderString = [header stringByAppendingString:shadertoyCode];
-            GLuint fragmentShader = compileShader(GL_FRAGMENT_SHADER, fragmentShaderString);
+            fragmentShader = compileShader(GL_FRAGMENT_SHADER, fragmentShaderString);
         }
 
         glAttachShader(self.program, vertexShader);
@@ -161,6 +166,7 @@ void checkError(int lineNumber)
 
 GLuint compileShader(GLenum type, NSString *source)
 {
+    NSLog(@"Shader source: %@", source);
     GLuint shader = glCreateShader(type);
     const char *sourceUTF8 = [source UTF8String];
     glShaderSource(shader, 1, &sourceUTF8, NULL);
