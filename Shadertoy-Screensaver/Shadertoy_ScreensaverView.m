@@ -228,8 +228,13 @@ GLuint compileShader(GLenum type, NSString *source)
     glUniform1f(glGetUniformLocation(self.program, "iTimeDelta"), (GLfloat)((float)(self.animationTimeInterval)));
 
     GLint iResolutionLocation = glGetUniformLocation(self.program, "iResolution");
-    float width = self.bounds.size.width;
-    float height = self.bounds.size.height;
+
+    // We only get the "points" i.e. the scaled resolution of the screen from self.bounds.size
+    // We get the real resolution of the screen via GL_VIEWPORT which is useful for fragment shaders
+    GLint viewport[4];
+    glGetIntegerv(GL_VIEWPORT, viewport);
+    GLfloat width = (GLfloat)viewport[2];
+    GLfloat height = (GLfloat)viewport[3];
 
     glUniform3f(iResolutionLocation, width, height, 1.0);
 
@@ -309,7 +314,7 @@ GLuint compileShader(GLenum type, NSString *source)
                         "\nout vec4 shadertoy_out_color;\n"
                         "void main( void ){"
                         "vec4 color = vec4(1e20);"
-                        "mainImage( color, (gl_FragCoord.xy + vec2(1.0)) * 0.5 );"
+                        "mainImage( color, gl_FragCoord.xy );"
                         "shadertoy_out_color = vec4(color.xyz,1.0);"
                         "}\n";
     return header;
