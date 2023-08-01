@@ -66,12 +66,6 @@ static NSString * const MyModuleName = @"diracdrifter.Shadertoy-Screensaver";
 
         NSString *header = [self createShadertoyHeader];
 
-        // Uncomment to get shader from file
-        //NSDictionary *shaderInfo = [self JSONFromFile:@"shader.json"];
-        //NSString *shadertoyCode = [self getShaderStringFromJSON:shaderInfo];
-
-        // TODO: Add failsafe by loading shader from disk instead
-
         NSLog(@"before getting default");
         NSString *shadertoyJson = [defaults stringForKey:@"ShaderJSON"];
         NSLog(@"shadertoyJson %@", shadertoyJson);
@@ -89,6 +83,16 @@ static NSString * const MyModuleName = @"diracdrifter.Shadertoy-Screensaver";
         //NSString *fragmentShaderString = [header stringByAppendingString:[self loadShader:@"fragmentshader.glsl"]];
         NSString *fragmentShaderString = [header stringByAppendingString:shadertoyCode];
         GLuint fragmentShader = compileShader(GL_FRAGMENT_SHADER, fragmentShaderString);
+
+        if (fragmentShader == 0) {
+            NSLog(@"Error with fetched shader. Revert to shader loaded from disk");
+
+            shaderInfo = [self JSONFromFile:@"shader.json"];
+            shadertoyCode = [self getShaderStringFromJSON:shaderInfo];
+
+            fragmentShaderString = [header stringByAppendingString:shadertoyCode];
+            GLuint fragmentShader = compileShader(GL_FRAGMENT_SHADER, fragmentShaderString);
+        }
 
         glAttachShader(self.program, vertexShader);
         glAttachShader(self.program, fragmentShader);
