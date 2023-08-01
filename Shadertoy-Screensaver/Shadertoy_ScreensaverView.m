@@ -66,21 +66,15 @@ static NSString * const MyModuleName = @"diracdrifter.Shadertoy-Screensaver";
 
         NSString *header = [self createShadertoyHeader];
 
-        NSLog(@"before getting default");
         NSString *shadertoyJson = [defaults stringForKey:@"ShaderJSON"];
         NSLog(@"shadertoyJson %@", shadertoyJson);
 
         NSDictionary *shaderInfo = [self JSONFromString:shadertoyJson];
 
-        // TODO Remove this
-        NSDictionary *shaderfrominfo = [shaderInfo objectForKey:@"Shader"];
-        NSLog(@"shader version: %@", [shaderfrominfo objectForKey:@"ver"]);
-
         NSString *shadertoyCode = [self getShaderStringFromJSON:shaderInfo];
 
         NSLog(@"shadertoyCode: %@", shadertoyCode);
 
-        //NSString *fragmentShaderString = [header stringByAppendingString:[self loadShader:@"fragmentshader.glsl"]];
         NSString *fragmentShaderString = [header stringByAppendingString:shadertoyCode];
         GLuint fragmentShader = compileShader(GL_FRAGMENT_SHADER, fragmentShaderString);
 
@@ -254,9 +248,7 @@ GLuint compileShader(GLenum type, NSString *source)
 
     glDisableVertexAttribArray(posAttrib);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
-    //glDeleteBuffers(1, &self.vertexBufferObject);
     glBindVertexArray(0);
-    //glDeleteVertexArrays(1, &self.vertexArrayObject);
     GLLog();
 
     [self.openGLContext flushBuffer];
@@ -327,7 +319,6 @@ GLuint compileShader(GLenum type, NSString *source)
 - (NSString *)getShaderStringFromJSON:(NSDictionary *)shaderInfo
 {
     NSDictionary *shader = [shaderInfo objectForKey:@"Shader"];
-    //NSLog(@"shader version: %@", [shader objectForKey:@"ver"]);
     NSDictionary *renderPass = [[shader objectForKey:@"renderpass"] objectAtIndex:0];
     NSString *code = [renderPass objectForKey:@"code"];
     return code;
@@ -337,10 +328,6 @@ GLuint compileShader(GLenum type, NSString *source)
 - (NSDictionary *)JSONFromFile:(NSString *)name
 {
     NSString *path = [[NSBundle bundleForClass:[self class]] pathForResource:name ofType:nil];
-    //NSString *path = [[NSBundle mainBundle] pathForResource:@"colors" ofType:@"json"];
-    //NSError *error;
-    //NSString *jsonString = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:&error];
-    //NSLog(@"jsonString: %@", jsonString);
     NSData *data = [NSData dataWithContentsOfFile:path];
     return [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
 }

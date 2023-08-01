@@ -27,7 +27,6 @@ static NSString * const MyModuleName = @"diracdrifter.Shadertoy-Screensaver";
     NSLog(@"shaderJson in configsheet %@", shaderJson);
     [self.shadertoyShaderIDTextField setStringValue:shadertoyShaderID];
     [self.shadertoyAPIKeyTextField setStringValue:shadertoyApiKey];
-    //[self.statusTextField setStringValue:@"Status"];
 }
 
 - (IBAction)doneButtonClicked:(id)sender
@@ -41,9 +40,6 @@ static NSString * const MyModuleName = @"diracdrifter.Shadertoy-Screensaver";
     [defaults setObject:currentApiKey forKey:@"ShadertoyApiKey"];
 
     NSString *requestUrl = [self createRequestString:currentShaderID apiKey:currentApiKey];
-    //NSString *shaderJson = [self getShaderJson:request];
-    //NSLog(@"shaderJson: %@", shaderJson);
-    //[defaults setObject:shaderJson forKey:@"ShaderJSON"];
 
     [self.statusTextField setStringValue:@"Fetching shader"];
 
@@ -72,8 +68,6 @@ static NSString * const MyModuleName = @"diracdrifter.Shadertoy-Screensaver";
     } fullURL:requestUrl];
 
     [defaults synchronize];
-
-    //[[NSApplication sharedApplication] endSheet:self.window];
 }
 
 - (IBAction)closeButtonClicked:(id)sender
@@ -88,26 +82,6 @@ static NSString * const MyModuleName = @"diracdrifter.Shadertoy-Screensaver";
     NSString *urlWithApiKey = [[urlWithShader stringByAppendingString:@"?key="] stringByAppendingString:apiKey];
 
     return urlWithApiKey;
-}
-
-- (NSString *)getShaderJson:(NSString*)fullURL
-{
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-    [request setHTTPMethod:@"GET"];
-    [request setURL:[NSURL URLWithString:fullURL]];
-    NSError *error;
-    NSHTTPURLResponse *responseCode = nil;
-
-    // Deprecated: see xcode warning
-    NSData *oResponseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&responseCode error:&error];
-
-    NSInteger statusCode = [responseCode statusCode];
-
-    if(statusCode != 200) {
-        NSLog(@"status code %i from request to %@", statusCode, fullURL);
-    }
-
-    return [[NSString alloc] initWithData:oResponseData encoding:NSUTF8StringEncoding];
 }
 
 - (void)fetchDataWithCompletion:(void (^)(NSData *data, NSError *error, NSHTTPURLResponse *response))completion fullURL:(NSString*)fullURL {
